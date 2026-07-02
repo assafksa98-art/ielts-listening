@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>تدريب الاستماع - آيلتس أكاديمي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #f4f6fb;
+    --card-bg: #ffffff;
+    --panel-2: #f4f7fb;
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --primary-soft: #eff6ff;
+    --gold: #d97706;
+    --gold-soft: #fef3c7;
+    --text: #1f2937;
+    --muted: #6b7280;
+    --heading: #0f2954;
+    --border: #e5e7eb;
+    --border-soft: #eef1f6;
+    --correct: #16a34a;
+    --correct-bg: #ecfdf5;
+    --correct-border: #86efac;
+    --correct-text: #166534;
+    --wrong: #dc2626;
+    --wrong-bg: #fef2f2;
+    --wrong-border: #fca5a5;
+    --wrong-text: #991b1b;
+    --radius: 16px;
+    --shadow: 0 4px 18px rgba(15, 41, 84, .07);
+  }
+
+  html[data-theme='dark'] {
+    --bg: #0f172a;
+    --card-bg: #1e293b;
+    --panel-2: #172033;
+    --primary: #3b82f6;
+    --primary-dark: #60a5fa;
+    --primary-soft: #16233f;
+    --gold: #fbbf24;
+    --gold-soft: #3a2e10;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --heading: #f1f5f9;
+    --border: #334155;
+    --border-soft: #263349;
+    --correct: #22c55e;
+    --correct-bg: #14321f;
+    --correct-border: #15803d;
+    --correct-text: #86efac;
+    --wrong: #ef4444;
+    --wrong-bg: #3a1414;
+    --wrong-border: #b91c1c;
+    --wrong-text: #fca5a5;
+    --shadow: 0 4px 18px rgba(0, 0, 0, .4);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Tajawal', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.85;
+    transition: background .2s, color .2s;
+  }
+
+  h1, h2, h3, h4, .brand { font-family: 'Cairo', sans-serif; }
+
+  .wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 26px 16px 80px;
+  }
+
+  /* ===== Header ===== */
+  header.hero {
+    text-align: center;
+    margin-bottom: 22px;
+    position: relative;
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.85rem;
+    font-weight: 800;
+    color: var(--heading);
+  }
+  .brand .dot {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--primary);
+    box-shadow: 0 0 14px rgba(37,99,235,.5);
+  }
+  .hero p { color: var(--muted); margin: 8px 0 0; font-size: 1.02rem; }
+  .hero .tag { color: var(--gold); font-weight: 700; }
+
+  .theme-toggle {
+    position: absolute;
+    inset-inline-start: 0;
+    top: 2px;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    color: var(--text);
+    font-size: 1.25rem;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: transform .1s, background .15s;
+  }
+  .theme-toggle:hover { transform: scale(1.08); }
+
+  /* ===== Tabs ===== */
+  nav.tabs {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 8px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow);
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) transparent;
+  }
+  nav.tabs::-webkit-scrollbar { height: 6px; }
+  nav.tabs::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 999px; }
+  .tab-btn {
+    flex: 0 0 auto;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    font-family: 'Cairo', sans-serif;
+    font-weight: 600;
+    font-size: .98rem;
+    padding: 11px 20px;
+    border-radius: 999px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all .2s ease;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(37,99,235,.28);
+  }
+
+  /* ===== Sections ===== */
+  section.view { display: none; animation: fade .35s ease; }
+  section.view.active { display: block; }
+  @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px;
+    margin-bottom: 18px;
+    box-shadow: var(--shadow);
+  }
+  .card h2 { margin: 0 0 6px; color: var(--heading); font-size: 1.35rem; }
+  .card h3 { color: var(--primary-dark); margin: 18px 0 8px; font-size: 1.1rem; }
+  .lead { color: var(--muted); margin-top: 0; }
+
+  .section-title { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .section-title .bar { width: 5px; height: 26px; border-radius: 4px; background: var(--gold); }
+  .section-title h2 { margin: 0; color: var(--heading); font-size: 1.5rem; }
+
+  /* Part chips */
+  .parts { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 12px; }
+  .part {
+    background: var(--panel-2);
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .part .num {
+    display: inline-block;
+    background: var(--primary);
+    color: #fff;
+    font-weight: 800;
+    font-family: 'Cairo';
+    border-radius: 8px;
+    padding: 2px 10px;
+    font-size: .85rem;
+    margin-bottom: 8px;
+  }
+  .part strong { color: var(--heading); display: block; margin-bottom: 4px; }
+  .part span { color: var(--muted); font-size: .95rem; }
+
+  /* info grid */
+  .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .info-box {
+    background: var(--panel-2);
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+  .info-box .big { font-size: 1.6rem; font-weight: 800; color: var(--gold); font-family:'Cairo'; }
+  .info-box .lbl { color: var(--muted); font-size: .92rem; }
+
+  /* band table */
+  table.band {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 6px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  table.band th, table.band td {
+    padding: 10px 12px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    font-size: .96rem;
+  }
+  table.band th { background: var(--primary); color: #fff; font-family: 'Cairo'; font-weight: 700; }
+  table.band td { background: var(--card-bg); color: var(--text); }
+  table.band tr:last-child td { border-bottom: none; }
+  table.band td:first-child { font-weight: 700; color: var(--correct); }
+
+  ul.clean { padding-inline-start: 20px; margin: 8px 0; }
+  ul.clean li { margin-bottom: 8px; }
+
+  /* English content isolation */
+  .en { direction: ltr; unicode-bidi: isolate; text-align: left; }
+
+  /* question type examples */
+  .qtype {
+    background: var(--panel-2);
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 12px;
+  }
+  .qtype .qhead { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .qtype .qhead .badge {
+    background: var(--gold); color: #fff; font-weight: 800; font-family:'Cairo';
+    padding: 2px 10px; border-radius: 8px; font-size: .8rem;
+  }
+  .qtype .qhead strong { color: var(--heading); }
+  .example {
+    margin-top: 10px;
+    background: var(--primary-soft);
+    color: var(--text);
+    border: 1px solid var(--border-soft);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: .95rem;
+  }
+  .example .ex-label {
+    direction: rtl;
+    color: var(--muted);
+    font-weight: 700;
+    font-size: .85rem;
+    margin-bottom: 4px;
+    display: block;
+  }
+
+  /* ===== Practice ===== */
+  .passage {
+    background: var(--panel-2);
+    color: var(--text);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin: 12px 0 16px;
+    border: 1px solid var(--border);
+  }
+  .passage h2 { color: var(--heading) !important; }
+  .passage .p-tag {
+    direction: rtl;
+    display: inline-block;
+    background: var(--primary); color: #fff;
+    font-family:'Cairo'; font-weight: 700;
+    border-radius: 8px; padding: 3px 12px; font-size: .82rem;
+    margin-bottom: 10px;
+  }
+  .transcript { font-size: 1rem; line-height: 1.9; }
+  .transcript p { margin: 0 0 10px; }
+  .speaker { font-weight: 700; color: var(--primary-dark); }
+
+  .q {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .q .q-num { color: var(--gold); font-weight: 800; font-family:'Cairo'; margin-inline-end: 6px; }
+  .q .q-type-lbl { color: var(--muted); font-size: .82rem; margin-inline-start: 6px; }
+  .q .prompt { margin: 6px 0 12px; }
+  .options { display: flex; flex-direction: column; gap: 8px; }
+  .opt {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--panel-2);
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 11px 14px;
+    cursor: pointer;
+    color: var(--text);
+    font-family: inherit;
+    font-size: .98rem;
+    text-align: start;
+    transition: border-color .15s, background .15s;
+    width: 100%;
+  }
+  .opt:hover:not(:disabled) { border-color: var(--primary); }
+  .opt .letter {
+    flex: 0 0 auto;
+    width: 26px; height: 26px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--border); color: var(--text);
+    font-weight: 700; font-size: .82rem;
+  }
+  .opt.correct { border-color: var(--correct); background: var(--correct-bg); }
+  .opt.correct .letter { background: var(--correct); color: #fff; }
+  .opt.wrong { border-color: var(--wrong); background: var(--wrong-bg); }
+  .opt.wrong .letter { background: var(--wrong); color: #fff; }
+  .opt:disabled { cursor: default; }
+
+  /* text input questions */
+  .text-answer { display: flex; gap: 8px; flex-wrap: wrap; }
+  .text-answer input {
+    flex: 1; min-width: 180px;
+    direction: ltr; text-align: left;
+    background: var(--panel-2);
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 11px 14px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 1rem;
+  }
+  .text-answer input:focus { outline: none; border-color: var(--primary); }
+  .text-answer input.correct { border-color: var(--correct); background: var(--correct-bg); }
+  .text-answer input.wrong { border-color: var(--wrong); background: var(--wrong-bg); }
+  .btn-check {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #fff; border: none; border-radius: 10px;
+    padding: 0 20px; font-weight: 800; font-family:'Cairo';
+    cursor: pointer; font-size: .95rem;
+  }
+  .btn-check:disabled { opacity: .5; cursor: default; }
+
+  .feedback {
+    margin-top: 12px;
+    border-radius: 10px;
+    padding: 11px 14px;
+    font-size: .95rem;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.ok { background: var(--correct-bg); border: 1px solid var(--correct-border); color: var(--correct-text); }
+  .feedback.no { background: var(--wrong-bg); border: 1px solid var(--wrong-border); color: var(--wrong-text); }
+  .feedback .fb-answer { color: var(--gold); font-weight: 700; }
+
+  /* score bar */
+  .scorebar {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--panel-2);
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin: 14px 0 6px;
+  }
+  .scorebar .track { flex: 1; height: 10px; background: var(--border); border-radius: 999px; overflow: hidden; }
+  .scorebar .fill {
+    height: 100%; width: 0;
+    background: linear-gradient(90deg, var(--primary), var(--gold));
+    transition: width .4s ease;
+  }
+  .scorebar .num { font-family:'Cairo'; font-weight: 800; color: var(--primary-dark); white-space: nowrap; }
+
+  .strategy {
+    display: flex; gap: 14px; align-items: flex-start;
+    background: var(--panel-2);
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .strategy .ico {
+    flex: 0 0 auto;
+    width: 40px; height: 40px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+    background: var(--primary-soft);
+    border: 1px solid var(--border-soft);
+  }
+  .strategy strong { color: var(--heading); display: block; margin-bottom: 3px; font-family:'Cairo'; }
+  .strategy span { color: var(--muted); font-size: .96rem; }
+
+  footer { text-align: center; color: var(--muted); font-size: .85rem; margin-top: 30px; }
+
+  @media (max-width: 560px) {
+    .info-grid { grid-template-columns: 1fr; }
+    .brand { font-size: 1.45rem; }
+    .card { padding: 18px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="hero">
+    <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع الليلي" title="تبديل الوضع الليلي">🌙</button>
+    <div class="brand"><span class="dot"></span> تدريب الاستماع — آيلتس أكاديمي</div>
+    <p>تدرّب على قسم <span class="tag">IELTS Listening</span> بالنصوص المكتوبة مع تصحيح فوري وشرح بالعربي</p>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <button class="tab-btn active" data-view="overview">نظرة عامة</button>
+    <button class="tab-btn" data-view="types">أنواع الأسئلة</button>
+    <button class="tab-btn" data-view="practice">تدريب مع Transcripts</button>
+    <button class="tab-btn" data-view="strategies">استراتيجيات</button>
+  </nav>
+
+  <!-- ========== OVERVIEW ========== -->
+  <section class="view active" id="overview">
+    <div class="section-title"><span class="bar"></span><h2>نظرة عامة على قسم الاستماع</h2></div>
+
+    <div class="card">
+      <p class="lead">قسم الاستماع في الآيلتس واحد لكل المتقدّمين (أكاديمي وعام). يتكوّن من <strong>٤ أجزاء</strong> بصعوبة متدرّجة، تستمع لكل مقطع <strong>مرة واحدة فقط</strong>، وتجيب على الأسئلة أثناء الاستماع.</p>
+      <div class="parts">
+        <div class="part">
+          <span class="num">Part 1</span>
+          <strong>محادثة يومية</strong>
+          <span>حوار بين شخصين في موقف حياتي (حجز، تسجيل، استفسار). أسهل جزء وغالباً فيه إكمال نموذج بأرقام وأسماء.</span>
+        </div>
+        <div class="part">
+          <span class="num">Part 2</span>
+          <strong>حديث فردي (Monologue)</strong>
+          <span>شخص واحد يتكلّم عن موضوع عام: جولة سياحية، فعالية، مرافق مكان. غالباً خرائط ومطابقة.</span>
+        </div>
+        <div class="part">
+          <span class="num">Part 3</span>
+          <strong>نقاش أكاديمي</strong>
+          <span>حوار بين ٢–٤ أشخاص (طلاب مع أستاذ عادةً) حول مشروع أو واجب دراسي. أصعب لأن المتحدثين أكثر.</span>
+        </div>
+        <div class="part">
+          <span class="num">Part 4</span>
+          <strong>محاضرة أكاديمية</strong>
+          <span>محاضرة رسمية من متحدث واحد حول موضوع علمي. الأصعب: لغة أكاديمية بدون توقّف.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>الوقت والتوقيت</h2>
+      <div class="info-grid">
+        <div class="info-box"><div class="big">٣٠ دقيقة</div><div class="lbl">مدة الاستماع للأجزاء الأربعة</div></div>
+        <div class="info-box"><div class="big">+ ١٠ دقائق</div><div class="lbl">لنقل الإجابات لورقة الإجابة (الورقي فقط)</div></div>
+        <div class="info-box"><div class="big">٤٠ سؤال</div><div class="lbl">١٠ أسئلة لكل جزء</div></div>
+        <div class="info-box"><div class="big">مرة واحدة</div><div class="lbl">كل مقطع يُشغّل مرة واحدة فقط</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>التقدير (Band Score)</h2>
+      <p class="lead">تُحوّل درجتك الخام (عدد الإجابات الصحيحة من ٤٠) إلى Band من ٠ إلى ٩. هذا جدول تقريبي شائع:</p>
+      <table class="band">
+        <thead><tr><th>Band</th><th>عدد الإجابات الصحيحة (تقريبي)</th><th>المستوى</th></tr></thead>
+        <tbody>
+          <tr><td>9.0</td><td>39 – 40</td><td>ممتاز</td></tr>
+          <tr><td>8.0</td><td>35 – 36</td><td>جيد جداً</td></tr>
+          <tr><td>7.0</td><td>30 – 32</td><td>جيد</td></tr>
+          <tr><td>6.0</td><td>23 – 25</td><td>مقبول (متوسط مستقل)</td></tr>
+          <tr><td>5.0</td><td>16 – 17</td><td>متوسط</td></tr>
+          <tr><td>4.0</td><td>11 – 12</td><td>محدود</td></tr>
+        </tbody>
+      </table>
+      <p class="lead" style="margin-top:10px;font-size:.88rem">* الأرقام تقريبية وقد تتغيّر قليلاً من اختبار لآخر.</p>
+    </div>
+  </section>
+
+  <!-- ========== QUESTION TYPES ========== -->
+  <section class="view" id="types">
+    <div class="section-title"><span class="bar"></span><h2>أنواع الأسئلة</h2></div>
+    <div class="card">
+      <p class="lead">هذه أهم أنواع الأسئلة في قسم الاستماع. تعرّف على شكل كل نوع مع مثال قصير قبل التدريب.</p>
+
+      <div class="qtype">
+        <div class="qhead"><span class="badge">1</span><strong>الاختيار من متعدد (Multiple Choice)</strong></div>
+        <p class="lead" style="margin:0">تختار الإجابة الصحيحة من ٣ أو ٤ خيارات. انتبه: قد يذكر المتحدث كل الخيارات لتشتيتك!</p>
+        <div class="example">
+          <span class="ex-label">مثال:</span>
+          <div class="en">The library closes at<br>A) 6 pm &nbsp; B) 8 pm &nbsp; C) 9 pm</div>
+        </div>
+      </div>
+
+      <div class="qtype">
+        <div class="qhead"><span class="badge">2</span><strong>إكمال نموذج / ملاحظات / جدول (Form / Note / Table Completion)</strong></div>
+        <p class="lead" style="margin:0">تكتب كلمة أو رقم في فراغ. انتبه لحدّ الكلمات (مثلاً "لا تزيد عن كلمتين").</p>
+        <div class="example">
+          <span class="ex-label">مثال:</span>
+          <div class="en">Name: John Smith<br>Phone number: ____________</div>
+        </div>
+      </div>
+
+      <div class="qtype">
+        <div class="qhead"><span class="badge">3</span><strong>المطابقة (Matching)</strong></div>
+        <p class="lead" style="margin:0">تطابق عناصر من قائمة مع خيارات (مثلاً تربط كل شخص بالرأي الذي قاله).</p>
+        <div class="example">
+          <span class="ex-label">مثال:</span>
+          <div class="en">Match each person to their opinion:<br>1. Tom → ___ &nbsp; (A = too expensive, B = very useful, C = hard to use)</div>
+        </div>
+      </div>
+
+      <div class="qtype">
+        <div class="qhead"><span class="badge">4</span><strong>تسمية خريطة / مخطط (Map / Plan Labeling)</strong></div>
+        <p class="lead" style="margin:0">تضع أسماء الأماكن على خريطة حسب الاتجاهات المذكورة (يمين، يسار، مقابل...).</p>
+        <div class="example">
+          <span class="ex-label">مثال:</span>
+          <div class="en">"The café is <b>opposite</b> the entrance, <b>next to</b> the stairs." → Label the café on the map.</div>
+        </div>
+      </div>
+
+      <div class="qtype">
+        <div class="qhead"><span class="badge">5</span><strong>إكمال الجمل (Sentence Completion)</strong></div>
+        <p class="lead" style="margin:0">تكمل جملة بكلمات من المقطع، بنفس الكلمات المسموعة عادةً.</p>
+        <div class="example">
+          <span class="ex-label">مثال:</span>
+          <div class="en">The museum was built in ____________.</div>
+        </div>
+      </div>
+
+      <div class="qtype">
+        <div class="qhead"><span class="badge">6</span><strong>الإجابة القصيرة (Short Answer)</strong></div>
+        <p class="lead" style="margin:0">تجيب بسؤال مباشر بكلمة أو كلمتين ضمن الحد المسموح.</p>
+        <div class="example">
+          <span class="ex-label">مثال:</span>
+          <div class="en">What should students bring to the trip? → ____________</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PRACTICE ========== -->
+  <section class="view" id="practice">
+    <div class="section-title"><span class="bar"></span><h2>تدريب مع Transcripts</h2></div>
+    <div class="card">
+      <p class="lead">لا يوجد صوت هنا — اقرأ النص الإنجليزي (Transcript) كأنك تستمع إليه، ثم أجب على الأسئلة تحته. ستحصل على تصحيح فوري وشرح بالعربي. في الاختبار الحقيقي ستسمع الصوت مرة واحدة فقط، فحاول قراءة الأسئلة أولاً ثم النص.</p>
+    </div>
+    <div id="practice-container"></div>
+  </section>
+
+  <!-- ========== STRATEGIES ========== -->
+  <section class="view" id="strategies">
+    <div class="section-title"><span class="bar"></span><h2>استراتيجيات لرفع درجتك</h2></div>
+    <div class="card">
+      <div class="strategy">
+        <div class="ico">👀</div>
+        <div><strong>اقرأ الأسئلة قبل الاستماع</strong><span>عندك وقت قبل كل جزء — استغلّه لقراءة الأسئلة وفهم المطلوب. هذا يخليك تعرف متى تجي الإجابة.</span></div>
+      </div>
+      <div class="strategy">
+        <div class="ico">🔮</div>
+        <div><strong>توقّع نوع الإجابة</strong><span>قبل ما تسمع، خمّن: هل الفراغ رقم؟ اسم؟ تاريخ؟ مكان؟ التوقّع يساعدك تلتقط الإجابة أسرع.</span></div>
+      </div>
+      <div class="strategy">
+        <div class="ico">✍️</div>
+        <div><strong>انتبه للإملاء والجمع</strong><span>الكلمة الصحيحة بإملاء خاطئ = خطأ. راقب النهايات: هل الكلمة مفرد أو جمع (s)؟ الإملاء يُحتسب.</span></div>
+      </div>
+      <div class="strategy">
+        <div class="ico">🔁</div>
+        <div><strong>الكلمات المرادفة (Paraphrasing)</strong><span>نادراً ما يستخدم المتحدث نفس كلمات السؤال. تعوّد على المرادفات: "big" قد تُقال "large" أو "huge".</span></div>
+      </div>
+      <div class="strategy">
+        <div class="ico">⏭️</div>
+        <div><strong>لا تعلق في سؤال واحد</strong><span>لو فاتتك إجابة، انتقل فوراً للسؤال التالي. الصوت يكمل ولا ينتظرك — سؤال ضائع أفضل من سؤالين.</span></div>
+      </div>
+      <div class="strategy">
+        <div class="ico">🎯</div>
+        <div><strong>احذر أدوات التشتيت</strong><span>المتحدث قد يقول رقماً ثم يصحّحه: "at 7... sorry, at 8". الإجابة الصحيحة هي الأخيرة دائماً.</span></div>
+      </div>
+      <div class="strategy">
+        <div class="ico">🔤</div>
+        <div><strong>راقب كلمات الربط</strong><span>كلمات مثل however, but, finally, actually تشير غالباً إلى معلومة مهمة أو تغيير في الإجابة.</span></div>
+      </div>
+      <div class="strategy">
+        <div class="ico">📝</div>
+        <div><strong>راجع حدّ الكلمات</strong><span>لو مكتوب "NO MORE THAN TWO WORDS"، لا تكتب ثلاث كلمات وإلا تُحتسب خطأ حتى لو المعنى صحيح.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    تطبيق تدريبي للاستماع — يعمل بالكامل بدون إنترنت. التقدير تقريبي وليس بديلاً عن اختبار IELTS الرسمي.
+  </footer>
+</div>
+
+<script>
+/* =================== Theme (light / dark) =================== */
+(function () {
+  const root = document.documentElement;
+  const btn = document.getElementById('themeToggle');
+  const saved = localStorage.getItem('ielts-theme') || 'light';
+  apply(saved);
+  btn.addEventListener('click', function () {
+    apply(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  });
+  function apply(theme) {
+    root.setAttribute('data-theme', theme);
+    localStorage.setItem('ielts-theme', theme);
+    btn.textContent = theme === 'dark' ? '☀️' : '🌙';
+    btn.title = theme === 'dark' ? 'الوضع النهاري' : 'الوضع الليلي';
+  }
+})();
+
+/* =================== Tabs =================== */
+(function () {
+  const tabs = document.getElementById('tabs');
+  tabs.addEventListener('click', function (e) {
+    const btn = e.target.closest('.tab-btn');
+    if (!btn) return;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.view).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+
+/* =================== Practice Data =================== */
+/* type: 'mc' => options[], answer = index
+   type: 'text' => accept = [array of acceptable answers] */
+const PASSAGES = [
+  {
+    part: 'Part 1 — محادثة يومية',
+    title: 'Booking a sports centre membership',
+    transcript: [
+      ['Receptionist', "Good morning, Riverside Sports Centre. How can I help you?"],
+      ['Caller', "Hi, I'd like to become a member. What do I need to do?"],
+      ['Receptionist', "Sure! I just need a few details. Can I take your full name?"],
+      ['Caller', "Yes, it's Daniel Cooper. That's C-O-O-P-E-R."],
+      ['Receptionist', "Thank you. And a contact number?"],
+      ['Caller', "It's 0-7-7-double 4, 2-0-1-9-6-3."],
+      ['Receptionist', "Great. We have two plans: the standard plan is 30 pounds a month, and the premium plan, which includes the swimming pool, is 45 pounds."],
+      ['Caller', "I'll take the premium one — I love swimming."],
+      ['Receptionist', "Perfect. The centre opens at 6 am on weekdays, but on weekends we open a bit later, at 8 am. Oh, and don't forget to bring a photo for your membership card."]
+    ],
+    questions: [
+      {
+        type: 'text',
+        qtype: 'إكمال نموذج',
+        prompt: "Surname: ____________",
+        accept: ['cooper'],
+        explanation: "قال المتصل اسمه Daniel Cooper وتهجّاه C-O-O-P-E-R. اللقب (surname) هو Cooper."
+      },
+      {
+        type: 'text',
+        qtype: 'إكمال نموذج',
+        prompt: "Contact number: ____________",
+        accept: ['07744201963'],
+        explanation: "الرقم: 0-7-7-double 4 يعني 07744، ثم 201963 = 07744201963. \"double 4\" تعني 44."
+      },
+      {
+        type: 'mc',
+        qtype: 'اختيار من متعدد',
+        prompt: "Which membership plan does the caller choose?",
+        options: ["Standard, £30", "Premium, £45", "Premium, £30"],
+        answer: 1,
+        explanation: "اختار الخطة المميّزة (premium) بسعر 45 جنيه لأنها تشمل المسبح وهو يحب السباحة."
+      },
+      {
+        type: 'mc',
+        qtype: 'اختيار من متعدد',
+        prompt: "What time does the centre open on weekends?",
+        options: ["6 am", "7 am", "8 am"],
+        answer: 2,
+        explanation: "قالت الموظفة إن المركز يفتح 6 صباحاً في أيام الأسبوع، لكن في العطلة (weekends) يفتح متأخراً قليلاً الساعة 8 صباحاً."
+      },
+      {
+        type: 'text',
+        qtype: 'إجابة قصيرة',
+        prompt: "What should the caller bring for the membership card? (ONE word)",
+        accept: ['photo', 'a photo', 'picture'],
+        explanation: "قالت الموظفة \"don't forget to bring a photo\" — يجب إحضار صورة (photo) لبطاقة العضوية."
+      }
+    ]
+  },
+  {
+    part: 'Part 2 — حديث فردي (جولة)',
+    title: 'A guide introducing a city museum',
+    transcript: [
+      ['Guide', "Welcome, everyone, to the City History Museum. Let me give you a quick guide before you explore."],
+      ['Guide', "The museum first opened in 1925, so it's almost a hundred years old. It has three floors."],
+      ['Guide', "On the ground floor, you'll find the main hall and the gift shop, which is right next to the main entrance."],
+      ['Guide', "The first floor is all about local history, with old photographs and maps of the city."],
+      ['Guide', "The top floor is my favourite — it holds the art collection, including several famous paintings."],
+      ['Guide', "One important thing: photography is not allowed on the top floor, to protect the paintings. But you can take photos everywhere else."],
+      ['Guide', "The café is open until 5 pm, and the whole museum closes at 6 pm. Entry is free, but donations are welcome."]
+    ],
+    questions: [
+      {
+        type: 'text',
+        qtype: 'إكمال جملة',
+        prompt: "The museum first opened in ____________.",
+        accept: ['1925'],
+        explanation: "قال المرشد إن المتحف افتُتح لأول مرة عام 1925."
+      },
+      {
+        type: 'mc',
+        qtype: 'اختيار من متعدد',
+        prompt: "Where is the gift shop located?",
+        options: ["On the top floor", "Next to the main entrance", "On the first floor"],
+        answer: 1,
+        explanation: "متجر الهدايا في الطابق الأرضي بجانب المدخل الرئيسي (right next to the main entrance)."
+      },
+      {
+        type: 'mc',
+        qtype: 'اختيار من متعدد',
+        prompt: "What can visitors find on the top floor?",
+        options: ["Local history", "The café", "The art collection"],
+        answer: 2,
+        explanation: "الطابق العلوي (top floor) يحتوي على مجموعة الأعمال الفنية (art collection) واللوحات الشهيرة."
+      },
+      {
+        type: 'mc',
+        qtype: 'اختيار من متعدد',
+        prompt: "Where is photography NOT allowed?",
+        options: ["On the top floor", "In the gift shop", "In the café"],
+        answer: 0,
+        explanation: "التصوير ممنوع في الطابق العلوي (top floor) لحماية اللوحات، ومسموح في باقي الأماكن."
+      },
+      {
+        type: 'text',
+        qtype: 'إجابة قصيرة',
+        prompt: "What time does the whole museum close? (e.g. 6 pm)",
+        accept: ['6 pm', '6pm', '6:00 pm', 'six pm', '6 p.m.'],
+        explanation: "المقهى يغلق الساعة 5 مساءً، لكن المتحف بالكامل يغلق الساعة 6 مساءً (6 pm)."
+      }
+    ]
+  },
+  {
+    part: 'Part 3 — نقاش أكاديمي',
+    title: 'Two students planning a group project',
+    transcript: [
+      ['Tutor', "So, Maya and Leo, how is your group project on renewable energy going?"],
+      ['Maya', "Quite well. We decided to focus on solar power rather than wind, because there's more data available."],
+      ['Leo', "Yes, but I think the report is a bit too long. We should make it shorter and clearer."],
+      ['Tutor', "Good point. What about the presentation?"],
+      ['Maya', "I'll handle the slides, and Leo will do the speaking part, since he's more confident talking to an audience."],
+      ['Leo', "True. My only worry is time — we have just two weeks left."],
+      ['Tutor', "That should be enough if you start the slides this week. And remember to practise together at least once before the final day."],
+      ['Maya', "Definitely. We'll meet in the library on Thursday to rehearse."]
+    ],
+    questions: [
+      {
+        type: 'mc',
+        qtype: 'اختيار من متعدد',
+        prompt: "Why did the students choose solar power?",
+        options: ["It is cheaper", "There is more data available", "It is more popular"],
+        answer: 1,
+        explanation: "اختارت مايا الطاقة الشمسية بدل طاقة الرياح لأن البيانات المتوفرة عنها أكثر (more data available)."
+      },
+      {
+        type: 'mc',
+        qtype: 'اختيار من متعدد',
+        prompt: "What does Leo think about the report?",
+        options: ["It should be longer", "It is too short", "It should be shorter and clearer"],
+        answer: 2,
+        explanation: "رأى ليو أن التقرير طويل جداً واقترح جعله أقصر وأوضح (shorter and clearer)."
+      },
+      {
+        type: 'text',
+        qtype: 'إكمال جملة',
+        prompt: "Leo will be responsible for the ____________ part. (ONE word)",
+        accept: ['speaking', 'talking'],
+        explanation: "ستتولى مايا الشرائح (slides) بينما يتولى ليو جزء التحدّث (speaking part) لأنه أكثر ثقة أمام الجمهور."
+      },
+      {
+        type: 'mc',
+        qtype: 'اختيار من متعدد',
+        prompt: "How much time do they have left?",
+        options: ["One week", "Two weeks", "Three weeks"],
+        answer: 1,
+        explanation: "قال ليو إنه لم يتبقّ سوى أسبوعين (just two weeks left)."
+      },
+      {
+        type: 'text',
+        qtype: 'إجابة قصيرة',
+        prompt: "Where will they meet on Thursday? (ONE word)",
+        accept: ['library', 'the library'],
+        explanation: "اتفقا على اللقاء في المكتبة (library) يوم الخميس للتدرّب."
+      }
+    ]
+  },
+  {
+    part: 'Part 4 — محاضرة أكاديمية',
+    title: 'A short lecture on honeybees',
+    transcript: [
+      ['Lecturer', "Today we'll look at honeybees and why they matter so much to our environment."],
+      ['Lecturer', "A single honeybee colony can contain up to fifty thousand bees, all working together as one team."],
+      ['Lecturer', "Bees are essential because they pollinate plants. In fact, about one third of the food we eat depends on pollination by insects, mostly bees."],
+      ['Lecturer', "Sadly, bee numbers have been falling in recent years. The main cause is the loss of their natural habitat, along with the use of certain chemicals in farming."],
+      ['Lecturer', "There are simple ways to help. Planting flowers in your garden gives bees food, and avoiding harmful chemicals protects them."],
+      ['Lecturer', "So, as we've seen, protecting bees is not just about the bees themselves — it's about protecting our own food supply."]
+    ],
+    questions: [
+      {
+        type: 'text',
+        qtype: 'إكمال ملاحظات',
+        prompt: "A colony can contain up to ____________ bees. (a number)",
+        accept: ['50000', '50,000', 'fifty thousand', '50 000'],
+        explanation: "قال المحاضر إن الخلية الواحدة قد تحتوي على ما يصل إلى خمسين ألف نحلة (fifty thousand = 50,000)."
+      },
+      {
+        type: 'mc',
+        qtype: 'اختيار من متعدد',
+        prompt: "According to the lecture, why are bees essential?",
+        options: ["They produce honey", "They pollinate plants", "They eat harmful insects"],
+        answer: 1,
+        explanation: "النحل ضروري لأنه يلقّح النباتات (pollinate plants)، وثلث غذائنا يعتمد على التلقيح."
+      },
+      {
+        type: 'mc',
+        qtype: 'اختيار من متعدد',
+        prompt: "About how much of our food depends on pollination by insects?",
+        options: ["One third", "One half", "Two thirds"],
+        answer: 0,
+        explanation: "قال المحاضر إن حوالي ثلث (one third) الطعام الذي نأكله يعتمد على التلقيح بواسطة الحشرات."
+      },
+      {
+        type: 'mc',
+        qtype: 'اختيار من متعدد',
+        prompt: "What is the MAIN cause of falling bee numbers?",
+        options: ["Cold weather", "Loss of natural habitat", "Too many predators"],
+        answer: 1,
+        explanation: "السبب الرئيسي لتراجع أعداد النحل هو فقدان الموطن الطبيعي (loss of natural habitat) مع استخدام المواد الكيميائية في الزراعة."
+      },
+      {
+        type: 'text',
+        qtype: 'إجابة قصيرة',
+        prompt: "What can people plant in their gardens to help bees? (ONE word)",
+        accept: ['flowers', 'flower'],
+        explanation: "زراعة الأزهار (flowers) في الحديقة توفّر غذاءً للنحل وتساعده."
+      }
+    ]
+  }
+];
+
+/* =================== Render Practice =================== */
+(function () {
+  const container = document.getElementById('practice-container');
+  const state = PASSAGES.map(p => ({ answered: new Array(p.questions.length).fill(false), correct: 0 }));
+
+  function norm(s) {
+    return String(s).toLowerCase().trim()
+      .replace(/[.,!?;:]/g, '')
+      .replace(/\s+/g, ' ');
+  }
+
+  PASSAGES.forEach((p, pi) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+
+    let html = '<div class="passage"><span class="p-tag">' + p.part + '</span>';
+    html += '<h2 style="margin:.2em 0 .5em">' + p.title + '</h2>';
+    html += '<div class="transcript en">';
+    p.transcript.forEach(line => {
+      html += '<p><span class="speaker">' + line[0] + ':</span> ' + line[1] + '</p>';
+    });
+    html += '</div></div>';
+
+    html += '<div class="scorebar"><span class="num" id="score-' + pi + '">0 / ' + p.questions.length + '</span>'
+      + '<div class="track"><div class="fill" id="fill-' + pi + '"></div></div></div>';
+
+    card.innerHTML = html;
+
+    p.questions.forEach((q, qi) => {
+      const qEl = document.createElement('div');
+      qEl.className = 'q';
+      const head = '<div><span class="q-num">Q' + (qi + 1) + '</span>'
+        + '<span class="q-type-lbl">' + q.qtype + '</span></div>'
+        + '<div class="prompt en">' + q.prompt + '</div>';
+
+      if (q.type === 'mc') {
+        let opts = '<div class="options">';
+        q.options.forEach((opt, oi) => {
+          const letter = String.fromCharCode(65 + oi);
+          opts += '<button class="opt en" data-pi="' + pi + '" data-qi="' + qi + '" data-oi="' + oi + '">'
+            + '<span class="letter">' + letter + '</span><span>' + opt + '</span></button>';
+        });
+        opts += '</div>';
+        qEl.innerHTML = head + opts + '<div class="feedback" id="fb-' + pi + '-' + qi + '"></div>';
+      } else {
+        qEl.innerHTML = head
+          + '<div class="text-answer"><input type="text" class="en" placeholder="type your answer..." '
+          + 'data-pi="' + pi + '" data-qi="' + qi + '" />'
+          + '<button class="btn-check" data-pi="' + pi + '" data-qi="' + qi + '">تحقّق</button></div>'
+          + '<div class="feedback" id="fb-' + pi + '-' + qi + '"></div>';
+      }
+      card.appendChild(qEl);
+    });
+
+    container.appendChild(card);
+  });
+
+  function updateScore(pi) {
+    const p = PASSAGES[pi];
+    const st = state[pi];
+    document.getElementById('score-' + pi).textContent = st.correct + ' / ' + p.questions.length;
+    document.getElementById('fill-' + pi).style.width = (st.correct / p.questions.length * 100) + '%';
+  }
+
+  function showFeedback(pi, qi, ok, correctText, explanation) {
+    const fb = document.getElementById('fb-' + pi + '-' + qi);
+    fb.className = 'feedback show ' + (ok ? 'ok' : 'no');
+    let html = ok ? '✅ <strong>إجابة صحيحة!</strong> ' : '❌ <strong>إجابة خاطئة.</strong> ';
+    if (!ok && correctText) {
+      html += 'الإجابة الصحيحة: <span class="fb-answer en" style="unicode-bidi:isolate">' + correctText + '</span><br>';
+    }
+    html += explanation;
+    fb.innerHTML = html;
+  }
+
+  container.addEventListener('click', function (e) {
+    const btn = e.target.closest('.opt');
+    if (btn) {
+      const pi = +btn.dataset.pi, qi = +btn.dataset.qi, oi = +btn.dataset.oi;
+      if (state[pi].answered[qi]) return;
+      const q = PASSAGES[pi].questions[qi];
+      const parent = btn.closest('.q');
+      const allOpts = parent.querySelectorAll('.opt');
+      allOpts.forEach(o => o.disabled = true);
+      const ok = oi === q.answer;
+      btn.classList.add(ok ? 'correct' : 'wrong');
+      if (!ok) allOpts[q.answer].classList.add('correct');
+      state[pi].answered[qi] = true;
+      if (ok) state[pi].correct++;
+      updateScore(pi);
+      showFeedback(pi, qi, ok, q.options[q.answer], q.explanation);
+      return;
+    }
+    const check = e.target.closest('.btn-check');
+    if (check) {
+      const pi = +check.dataset.pi, qi = +check.dataset.qi;
+      if (state[pi].answered[qi]) return;
+      const q = PASSAGES[pi].questions[qi];
+      const input = check.closest('.q').querySelector('input');
+      const val = norm(input.value);
+      if (!val) return;
+      const ok = q.accept.some(a => norm(a) === val);
+      input.disabled = true;
+      check.disabled = true;
+      input.classList.add(ok ? 'correct' : 'wrong');
+      state[pi].answered[qi] = true;
+      if (ok) state[pi].correct++;
+      updateScore(pi);
+      showFeedback(pi, qi, ok, q.accept[0], q.explanation);
+    }
+  });
+
+  container.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && e.target.matches('input.en')) {
+      e.preventDefault();
+      const q = e.target.closest('.q');
+      const btn = q.querySelector('.btn-check');
+      if (btn && !btn.disabled) btn.click();
+    }
+  });
+})();
+</script>
+</body>
+</html>
