@@ -286,7 +286,41 @@
   }
   .transcript { font-size: 1rem; line-height: 1.9; }
   .transcript p { margin: 0 0 10px; }
+  .transcript.hidden { filter: blur(6px); user-select: none; opacity: .55; }
   .speaker { font-weight: 700; color: var(--primary-dark); }
+  .transcript p.speaking { background: var(--gold-soft); border-radius: 6px; box-shadow: 0 0 0 4px var(--gold-soft); }
+
+  /* audio controls */
+  .audio-controls {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+    margin: 4px 0 12px;
+    direction: rtl;
+  }
+  .audio-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    border: none; border-radius: 10px;
+    padding: 9px 16px;
+    font-family: 'Cairo', sans-serif; font-weight: 700; font-size: .92rem;
+    cursor: pointer;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: #fff;
+    transition: transform .1s, opacity .15s;
+  }
+  .audio-btn:hover { transform: translateY(-1px); }
+  .audio-btn.stop { background: var(--panel-2); color: var(--text); border: 1px solid var(--border); }
+  .audio-btn:disabled { opacity: .45; cursor: default; transform: none; }
+  .audio-toggle {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--muted); font-size: .9rem; cursor: pointer; user-select: none;
+    margin-inline-start: auto;
+  }
+  .audio-toggle input { width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer; }
+  .audio-note { color: var(--muted); font-size: .82rem; direction: rtl; margin: 0 0 6px; }
+  .speed-sel {
+    background: var(--panel-2); color: var(--text);
+    border: 1px solid var(--border); border-radius: 10px;
+    padding: 8px 10px; font-family: inherit; font-size: .88rem; cursor: pointer;
+  }
 
   .q {
     background: var(--card-bg);
@@ -865,9 +899,19 @@ const PASSAGES = [
 
     let html = '<div class="passage"><span class="p-tag">' + p.part + '</span>';
     html += '<h2 style="margin:.2em 0 .5em">' + p.title + '</h2>';
-    html += '<div class="transcript en">';
-    p.transcript.forEach(line => {
-      html += '<p><span class="speaker">' + line[0] + ':</span> ' + line[1] + '</p>';
+    html += '<p class="audio-note">🎧 اضغط «استمع» لسماع النص بصوت المتصفح (بدون إنترنت). فعّل «إخفاء النص» لمحاكاة الاختبار الحقيقي.</p>';
+    html += '<div class="audio-controls" data-pi="' + pi + '">'
+      + '<button class="audio-btn play" data-act="play" data-pi="' + pi + '">🔊 استمع للنص</button>'
+      + '<button class="audio-btn stop" data-act="stop" data-pi="' + pi + '" disabled>⏹ إيقاف</button>'
+      + '<select class="speed-sel" data-pi="' + pi + '" title="سرعة القراءة">'
+      + '<option value="0.75">🐢 بطيء</option>'
+      + '<option value="0.9" selected>عادي</option>'
+      + '<option value="1">🐇 سريع</option></select>'
+      + '<label class="audio-toggle"><input type="checkbox" data-act="hide" data-pi="' + pi + '"> إخفاء النص</label>'
+      + '</div>';
+    html += '<div class="transcript en" id="transcript-' + pi + '">';
+    p.transcript.forEach((line, li) => {
+      html += '<p data-li="' + li + '"><span class="speaker">' + line[0] + ':</span> ' + line[1] + '</p>';
     });
     html += '</div></div>';
 
@@ -968,6 +1012,112 @@ const PASSAGES = [
       if (btn && !btn.disabled) btn.click();
     }
   });
+})();
+
+/* =================== Text-to-Speech (audio) =================== */
+(function () {
+  const synth = window.speechSynthesis;
+  const container = document.getElementById('practice-container');
+
+  if (!synth || typeof SpeechSynthesisUtterance === 'undefined') {
+    container.querySelectorAll('.audio-controls').forEach(c => {
+      c.innerHTML = '<span class="audio-note">⚠️ متصفحك لا يدعم النطق الصوتي. جرّب Chrome أو Edge.</span>';
+    });
+    return;
+  }
+
+  let voices = [];
+  function loadVoices() { voices = synth.getVoices(); }
+  loadVoices();
+  if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
+
+  function pickEnglishVoice() {
+    if (!voices.length) voices = synth.getVoices();
+    return voices.find(v => /^en-GB/i.test(v.lang))
+        || voices.find(v => /^en-US/i.test(v.lang))
+        || voices.find(v => /^en/i.test(v.lang))
+        || null;
+  }
+
+  let currentPi = null;
+  let keepAlive = null;
+
+  function clearHighlights() {
+    document.querySelectorAll('.transcript p.speaking').forEach(p => p.classList.remove('speaking'));
+  }
+
+  function stopAll() {
+    clearInterval(keepAlive);
+    synth.cancel();
+    clearHighlights();
+    document.querySelectorAll('.audio-btn.play').forEach(b => b.disabled = false);
+    document.querySelectorAll('.audio-btn.stop').forEach(b => b.disabled = true);
+    currentPi = null;
+  }
+
+  function speakPassage(pi) {
+    stopAll();
+    const p = PASSAGES[pi];
+    const voice = pickEnglishVoice();
+    const sel = document.querySelector('.speed-sel[data-pi="' + pi + '"]');
+    const rate = parseFloat(sel && sel.value) || 0.9;
+    const paras = document.getElementById('transcript-' + pi).querySelectorAll('p');
+
+    document.querySelector('.audio-btn.play[data-pi="' + pi + '"]').disabled = true;
+    document.querySelector('.audio-btn.stop[data-pi="' + pi + '"]').disabled = false;
+    currentPi = pi;
+
+    p.transcript.forEach((line, li) => {
+      const u = new SpeechSynthesisUtterance(line[1]);
+      if (voice) u.voice = voice;
+      u.lang = voice ? voice.lang : 'en-GB';
+      u.rate = rate;
+      u.pitch = 1;
+      u.onstart = function () {
+        clearHighlights();
+        if (paras[li]) {
+          paras[li].classList.add('speaking');
+          if (paras[li].closest('.transcript').classList.contains('hidden')) {
+            // keep hidden, don't scroll to text
+          } else {
+            paras[li].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+          }
+        }
+      };
+      if (li === p.transcript.length - 1) {
+        u.onend = function () { if (currentPi === pi) stopAll(); };
+      }
+      synth.speak(u);
+    });
+
+    // Chrome keep-alive: speech can pause itself after ~15s
+    clearInterval(keepAlive);
+    keepAlive = setInterval(function () {
+      if (synth.speaking) { synth.resume(); } else { clearInterval(keepAlive); }
+    }, 5000);
+  }
+
+  container.addEventListener('click', function (e) {
+    const btn = e.target.closest('.audio-btn');
+    if (!btn) return;
+    const pi = +btn.dataset.pi;
+    if (btn.dataset.act === 'play') speakPassage(pi);
+    else stopAll();
+  });
+
+  container.addEventListener('change', function (e) {
+    if (e.target.matches('input[data-act="hide"]')) {
+      const pi = +e.target.dataset.pi;
+      document.getElementById('transcript-' + pi).classList.toggle('hidden', e.target.checked);
+    } else if (e.target.matches('.speed-sel')) {
+      const pi = +e.target.dataset.pi;
+      if (currentPi === pi) speakPassage(pi); // restart with new speed
+    }
+  });
+
+  // stop audio when switching tabs or leaving the page
+  document.getElementById('tabs').addEventListener('click', stopAll);
+  window.addEventListener('beforeunload', function () { synth.cancel(); });
 })();
 </script>
 </body>
